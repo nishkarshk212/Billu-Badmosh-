@@ -38,8 +38,6 @@ class Userbot(Client):
         Args:
             num (int): The client number to boot (1, 2, or 3).
             ub (Client): The userbot client instance.
-        Raises:
-            SystemExit: If the client fails to send a message in the log group.
         """
         clients = {
             1: self.one,
@@ -47,22 +45,26 @@ class Userbot(Client):
             3: self.three,
         }
         client = clients[num]
-        await client.start()
         try:
-            await client.send_message(config.LOGGER_ID, "Assistant Started")
-        except Exception:
-            raise SystemExit(f"Assistant {num} failed to send message in log group.")
+            await client.start()
+            try:
+                await client.send_message(config.LOGGER_ID, "Assistant Started")
+            except Exception:
+                logger.warning(f"Assistant {num} failed to send message in log group.")
 
-        client.id = ub.me.id
-        client.name = ub.me.first_name
-        client.username = ub.me.username
-        client.mention = ub.me.mention
-        self.clients.append(client)
-        try:
-            await ub.join_chat("fallenx")
-        except Exception:
-            pass
-        logger.info(f"Assistant {num} started as @{client.username}")
+            if ub.me:
+                client.id = ub.me.id
+                client.name = ub.me.first_name
+                client.username = ub.me.username
+                client.mention = ub.me.mention
+            self.clients.append(client)
+            try:
+                await ub.join_chat("fallenx")
+            except Exception:
+                pass
+            logger.info(f"Assistant {num} started as @{client.username}")
+        except Exception as e:
+            logger.warning(f"Failed to start assistant {num}: {str(e)}")
 
     async def boot(self):
         """
