@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
 class Config:
     def __init__(self):
         self.API_ID = int(getenv("API_ID", 0))
@@ -14,7 +15,7 @@ class Config:
         self.LOGGER_ID = int(getenv("LOGGER_ID", 0))
         self.OWNER_ID = int(getenv("OWNER_ID", 0))
 
-        self.DURATION_LIMIT = int(getenv("DURATION_LIMIT", 60)) * 60
+        self.DURATION_LIMIT = int(getenv("DURATION_LIMIT", 3600))
         self.QUEUE_LIMIT = int(getenv("QUEUE_LIMIT", 20))
         self.PLAYLIST_LIMIT = int(getenv("PLAYLIST_LIMIT", 20))
 
@@ -27,7 +28,7 @@ class Config:
 
         self.AUTO_LEAVE: bool = getenv("AUTO_LEAVE", "False").lower() == "true"
         self.AUTO_END: bool = getenv("AUTO_END", "False").lower() == "true"
-    
+
         self.THUMB_GEN: bool = getenv("THUMB_GEN", "True").lower() == "true"
         self.VIDEO_PLAY: bool = getenv("VIDEO_PLAY", "True").lower() == "true"
 
@@ -37,9 +38,17 @@ class Config:
             url for url in getenv("COOKIES_URL", "").split(" ")
             if url and "batbin.me" in url
         ]
-        self.DEFAULT_THUMB = getenv("DEFAULT_THUMB", "https://te.legra.ph/file/3e40a408286d4eda24191.jpg")
-        self.PING_IMG = getenv("PING_IMG", "https://files.catbox.moe/haagg2.png")
-        self.START_IMG = getenv("START_IMG", "https://files.catbox.moe/zvziwk.jpg")
+        self.DEFAULT_THUMB = getenv("DEFAULT_THUMB", "https://i.ibb.co/WppbqXQn/cat-clouds-looking-stars.jpg")
+        self.PING_IMG = getenv("PING_IMG", "https://i.ibb.co/Qjn7y0qp/anime-style-animal-digital-art.jpg")
+        self.START_IMG = getenv("START_IMG", "https://i.ibb.co/n80Z3Mx3/medium-shot-anime-woman-hugging-cat.jpg")
+        
+        # Primary YouTube Proxy API (XBit)
+        self.YT_API_KEY = getenv("YT_API_KEY", "")
+        self.YTPROXY_URL = getenv("YTPROXY_URL", "https://music.xbitcode.com")
+        
+        # Secondary YouTube Proxy API (ARU/NexGenBots)
+        self.ARU_API_KEY = getenv("ARU_API_KEY", "")
+        self.ARU_API_URL = getenv("ARU_API_URL", "https://aruyt-production.up.railway.app")
 
     def check(self):
         missing = [
